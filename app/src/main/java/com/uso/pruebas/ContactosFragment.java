@@ -17,7 +17,9 @@ import com.uso.pruebas.responses.ComidaResponse;
 import com.uso.pruebas.responses.ComidasService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,6 +75,77 @@ public class ContactosFragment extends Fragment {
             }
         });
     }
+    private void getUnaComida(){
+        ComidasService service = retrofit.create(ComidasService.class);
+        Call<Comida> response = service.getComida("5fd176fbc45cb222d8c45f30");
+        response.enqueue(new Callback<Comida>() {
+            @Override
+            public void onResponse(Call<Comida> call, Response<Comida> response) {
+                if(response.isSuccessful()){
+                    Comida res = response.body();
+                    listaComidas.add(res);
+                    adapter.addAll(listaComidas);
+                    listviewContactos.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Comida> call, Throwable t) {
+
+            }
+        });
+    }
+    private void insertarComida(){
+        ComidasService service = retrofit.create(ComidasService.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("menu", "Costillas ahumadas");
+        map.put("precio", 4.50);
+        Comida comida = new Comida();
+        comida.setMenu("Costillas ahumadas");
+        comida.setPrecio(4.50);
+        Call<Comida> response = service.insertcomidas(comida);
+        response.enqueue(new Callback<Comida>() {
+            @Override
+            public void onResponse(Call<Comida> call, Response<Comida> response) {
+                if(response.isSuccessful()){
+                    Comida res = response.body();
+                    listaComidas.add(res);
+                    adapter.addAll(listaComidas);
+                    listviewContactos.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Comida> call, Throwable t) {
+
+            }
+        });
+    }
+    private void actualizarComida(){
+        ComidasService service = retrofit.create(ComidasService.class);
+
+        Comida comida = new Comida();
+        comida.setMenu("Costillas de cerdo ahumadas");
+        comida.setPrecio(4.50);
+
+        Call<Comida> response = service.updatecomidas("5fd19a3e33ecd200170d27ce", comida);
+        response.enqueue(new Callback<Comida>() {
+            @Override
+            public void onResponse(Call<Comida> call, Response<Comida> response) {
+                if(response.isSuccessful()){
+                    Comida res = response.body();
+                    listaComidas.add(res);
+                    adapter.addAll(listaComidas);
+                    listviewContactos.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Comida> call, Throwable t) {
+
+            }
+        });
+    }
 
     private void cargarLista(){
         listContactos.add("Marito");
@@ -125,7 +198,7 @@ public class ContactosFragment extends Fragment {
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
 
 
-        cargarComidas();
+        actualizarComida();
 
         return  view;
     }
