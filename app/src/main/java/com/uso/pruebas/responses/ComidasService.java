@@ -43,5 +43,5 @@ public interface ComidasService {
     Call<Comida> updatecomidas(@Path("id") String id, @Body Comida comida);
 
     @DELETE("comidas/{id}")
-    Call<ComidaResponse> deletecomida(@Path("id") String id );
+    Call<Comida> deletecomida(@Path("id") String id );
 }

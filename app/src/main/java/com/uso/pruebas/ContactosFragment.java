@@ -146,6 +146,27 @@ public class ContactosFragment extends Fragment {
             }
         });
     }
+    private void eliminarComida(){
+        ComidasService service = retrofit.create(ComidasService.class);
+
+        Call<Comida> response = service.deletecomida("5fd196ad33ecd200170d27cb");
+        response.enqueue(new Callback<Comida>() {
+            @Override
+            public void onResponse(Call<Comida> call, Response<Comida> response) {
+                if(response.isSuccessful()){
+                    Comida res = response.body();
+                    listaComidas.add(res);
+                    adapter.addAll(listaComidas);
+                    listviewContactos.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Comida> call, Throwable t) {
+
+            }
+        });
+    }
 
     private void cargarLista(){
         listContactos.add("Marito");
@@ -198,7 +219,7 @@ public class ContactosFragment extends Fragment {
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
 
 
-        actualizarComida();
+        eliminarComida();
 
         return  view;
     }
